@@ -2,6 +2,7 @@ package chinese.restaurant.service;
 
 import chinese.restaurant.entity.Usuario;
 import chinese.restaurant.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -25,15 +26,28 @@ public class UsuarioService {
     }
 
     // Guardar o actualizar un usuario
-    public void guardarActualizar(Usuario usuario) {
+    public String guardarActualizar(Usuario usuario) {
+        usuarioRepository.save(usuario);
+        return "Se registro/actualizo el usuario";
+    }
+
+
+
+    @Transactional
+    public void eliminarLogico(Integer id) {
+        // Buscar el producto por ID
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // Marcar el producto como eliminado (estado = false)
+        usuario.setEstado(false);
+
+        // Guardar el producto con el nuevo estado
         usuarioRepository.save(usuario);
     }
 
-    // Eliminar un usuario por ID
-    public void eliminar(Integer id) {
-        if (!usuarioRepository.existsById(id)) {
-            throw new RuntimeException("Usuario no encontrado");
-        }
-        usuarioRepository.deleteById(id);
+    public List<Usuario> buscarPorNombre(String nombre) {
+        List<Usuario> usuarios = usuarioRepository.findByNombreLike(nombre);
+        return usuarios;
     }
+
 }

@@ -1,5 +1,6 @@
 package chinese.restaurant.controller;
 
+import chinese.restaurant.entity.Respuesta;
 import chinese.restaurant.entity.Usuario;
 import chinese.restaurant.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,24 +26,6 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarios);  // Respuesta 200 con la lista de usuarios
     }
 
-    // Crear o actualizar un usuario
-    @PostMapping
-    public ResponseEntity<Void> guardarActualizar(@RequestBody Usuario usuario) {
-        usuarioService.guardarActualizar(usuario);
-        return ResponseEntity.status(201).build();  // Respuesta 201 si el recurso fue creado/actualizado
-    }
-
-    // Eliminar un usuario por ID
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> eliminarUsuario(@PathVariable("id") Integer id) {
-        try {
-            usuarioService.eliminar(id);
-            return ResponseEntity.noContent().build();  // Respuesta 204 si el recurso fue eliminado
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();  // Respuesta 404 si no se encuentra el usuario
-        }
-    }
-
     // Obtener un usuario por ID
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> getById(@PathVariable("id") Integer id) {
@@ -52,5 +35,31 @@ public class UsuarioController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();  // Respuesta 404 si no se encuentra el usuario
         }
+    }
+
+    // Crear o actualizar un usuario
+    @PostMapping
+    public ResponseEntity<Respuesta> guardarActualizar(@RequestBody Usuario usuario) {
+        String respuesta = usuarioService.guardarActualizar(usuario);
+        Respuesta rep = new Respuesta(respuesta, true);
+        return ResponseEntity.ok(rep);  // Respuesta 201 si el recurso fue creado/actualizado
+    }
+
+    @PutMapping("/eliminar/{id}")
+    public ResponseEntity<Respuesta> eliminarLogico(@PathVariable Integer id) {
+        try {
+            usuarioService.eliminarLogico(id);  // Llamada al servicio para eliminar lógicamente
+            Respuesta respuesta = new Respuesta("El usuario ha sido eliminado", true);
+            return ResponseEntity.ok(respuesta);  // Retornar el DTO con el mensaje de éxito
+        } catch (RuntimeException e) {
+            Respuesta respuesta = new Respuesta("Usuario no encontrado", false);
+            return ResponseEntity.status(404).body(respuesta);  // Retornar el DTO con el mensaje de error
+        }
+    }
+
+    @GetMapping("/findByName")
+    public ResponseEntity<List<Usuario>> buscarPorNombre(@RequestParam String name) {
+        List<Usuario> usuarios = usuarioService.buscarPorNombre("%"+name+"%");
+        return ResponseEntity.ok(usuarios);
     }
 }

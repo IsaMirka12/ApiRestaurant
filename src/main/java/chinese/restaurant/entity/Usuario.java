@@ -33,9 +33,20 @@ public class Usuario {
     @JsonFormat
     private String rol;
 
-    @JsonIgnore
+    @Getter
+    @JsonFormat
     private String clave;
 
     @JsonFormat
     private String telefono;
+
+    @JsonFormat
+    private boolean estado = true;
+
+    public boolean getEstado(){
+        return this.estado;
+    }
+    public void  setEstado(Boolean estado){
+        this.estado = estado;
+    }
 }
