@@ -6,6 +6,7 @@ import chinese.restaurant.entity.Usuario;
 import chinese.restaurant.service.PagosService;
 import chinese.restaurant.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +43,12 @@ public class PagoController {
         String respuesta = pagosService.insertarPago(pagos);
         Respuesta rep = new Respuesta(respuesta, true);
         return ResponseEntity.ok(rep);
+    }
+
+    @GetMapping("/pedido/{pedido_id}")
+    public ResponseEntity<List<Pagos>> getPagosByPedidoId(@PathVariable("pedido_id") Integer pedidoId) {
+        List<Pagos> pagos = pagosService.findByPedidoId(pedidoId);
+        return ResponseEntity.ok(pagos);
     }
 
 }

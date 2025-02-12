@@ -10,6 +10,5 @@ import java.util.List;
 @Repository
 public interface CartaRepository extends JpaRepository<Carta, Integer> {
 
-    //List<Carta> findByNombreProductoLike(String nombre_producto);
-   // List<Carta> findByDisponibleTrue();
+    List<Carta> findByNombreProductoContainingIgnoreCase(String nombre_producto);
 }

@@ -17,13 +17,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Table(name = "carta")
 public class Carta {
 
+    @JsonFormat
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NotNull()
     @JsonFormat
-    private String nombre_producto;
+    @Column(name = "nombre_producto")
+    private String nombreProducto;
     @JsonFormat
     @Column(name = "descripcion")
     private String descripcion;
@@ -38,5 +40,23 @@ public class Carta {
     @JsonFormat
     @Column(name = "disponible")
     private boolean disponible = true;
+
+    @JsonFormat
+    private boolean estado = true;
+
+    public boolean getEstado(){
+        return this.estado;
+    }
+    public void  setEstado(Boolean estado){
+        this.estado = estado;
+    }
+
+    public String getNombreProducto() {
+        return nombreProducto;
+    }
+
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
+    }
 
 }

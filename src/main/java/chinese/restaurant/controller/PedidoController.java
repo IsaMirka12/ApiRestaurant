@@ -1,10 +1,12 @@
 package chinese.restaurant.controller;
 
 
+import chinese.restaurant.entity.EstadoPedido;
 import chinese.restaurant.entity.Respuesta;
 import chinese.restaurant.entity.Pedidos;
 import chinese.restaurant.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,11 +40,16 @@ public class PedidoController {
     }
 
     @PostMapping
-    public ResponseEntity<Respuesta> guardarActualizar(@RequestBody Pedidos pedidos) {
-        String respuesta = pedidoService.guardarActualizar(pedidos);
-        Respuesta rep = new Respuesta(respuesta, true);
+    public ResponseEntity<Respuesta> registrarPedido(@RequestBody Pedidos pedidos) {
+        Number idPedido = pedidoService.guardarActualizar(pedidos);
+        String mensaje = "Se registró el pedido. ";
+        Respuesta rep = new Respuesta(mensaje, true, idPedido);
         return ResponseEntity.ok(rep);
     }
+
+
+
+
 
     @PutMapping("/eliminar/{id}")
     public ResponseEntity<Respuesta> eliminarPedidoLogico(@PathVariable Integer id) {
@@ -56,5 +63,28 @@ public class PedidoController {
         }
     }
 
+
+    @PutMapping("/actualizarEstado/{id}/{estado}")
+    public ResponseEntity<Pedidos> actualizarEstado(@PathVariable Integer id, @PathVariable String estado) {
+        // Buscar el pedido por ID
+        Pedidos pedido = pedidoService.obtenerPedidoPorId(id);
+        if (pedido == null) {
+            return ResponseEntity.notFound().build();
+        }
+        try {
+            EstadoPedido estadoPedido = switch (estado) {
+                case "pendiente" -> EstadoPedido.pendiente;
+                case "preparado" -> EstadoPedido.preparado;
+                default -> EstadoPedido.entregado;
+            };
+
+            // Actualizar el estado
+            pedido.setEstado(estadoPedido);
+            pedidoService.guardarPedido(pedido);
+            return ResponseEntity.ok(pedido);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 
 }

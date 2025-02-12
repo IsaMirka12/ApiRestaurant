@@ -41,6 +41,10 @@ public class Pedidos {
     @JsonFormat
     private boolean estadoP = true;
 
+    @Column(name = "monto_total")
+    @JsonFormat
+    private double montoTotal;
+
     public boolean getEstadoP(){
         return this.estadoP;
     }
@@ -52,11 +56,12 @@ public class Pedidos {
     }
 
     // Constructor con parámetros
-    public Pedidos(int clienteId, int mozoId, Date fechaPedido, EstadoPedido estado) {
+    public Pedidos(int clienteId, int mozoId, Date fechaPedido, EstadoPedido estado, double montoTotal) {
         this.clienteId = clienteId;
         this.mozoId = mozoId;
         this.fechaPedido = fechaPedido;
         this.estado = estado;
+        this.montoTotal = montoTotal;
     }
 
     // Getters y Setters
@@ -99,5 +104,13 @@ public class Pedidos {
 
     public void setEstado(EstadoPedido estado) {
         this.estado = estado;
+    }
+
+    public double getMontoTotal() {
+        return this.montoTotal;
+    }
+
+    public void setMontoTotal(double montoTotal) {
+        this.montoTotal = montoTotal;
     }
 }

@@ -43,10 +43,18 @@ public class Usuario {
     @JsonFormat
     private boolean estado = true;
 
+    public String getNombre(){
+        return this.nombre;
+    }
+
     public boolean getEstado(){
         return this.estado;
     }
     public void  setEstado(Boolean estado){
         this.estado = estado;
+    }
+
+    public Number getId(){
+        return this.id;
     }
 }

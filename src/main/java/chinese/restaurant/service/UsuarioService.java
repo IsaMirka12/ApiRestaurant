@@ -26,9 +26,9 @@ public class UsuarioService {
     }
 
     // Guardar o actualizar un usuario
-    public String guardarActualizar(Usuario usuario) {
-        usuarioRepository.save(usuario);
-        return "Se registro/actualizo el usuario";
+    public Number guardarActualizar(Usuario usuario) {
+        Usuario user = usuarioRepository.save(usuario);
+        return user.getId();
     }
 
 
@@ -46,7 +46,7 @@ public class UsuarioService {
     }
 
     public List<Usuario> buscarPorNombre(String nombre) {
-        List<Usuario> usuarios = usuarioRepository.findByNombreLike(nombre);
+        List<Usuario> usuarios = usuarioRepository.findByNombreContainingIgnoreCase(nombre);
         return usuarios;
     }
 

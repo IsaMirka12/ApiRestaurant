@@ -1,7 +1,9 @@
 package chinese.restaurant.service;
 
 import chinese.restaurant.entity.Carta;
+import chinese.restaurant.entity.Usuario;
 import chinese.restaurant.repository.CartaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,22 +29,17 @@ public class CartaService {
         return "Se registró el plato";
     }
 
-   /* @Transactional
+    @Transactional
     public void eliminarCartaLogico(Integer id) {
         Carta carta = cartaRepository.findById(id).orElseThrow(() -> new RuntimeException("Carta no encontrado"));
-
-        carta.setDisponible(false);
-
+        carta.setEstado(false);
         cartaRepository.save(carta);
     }
 
 
-
     public List<Carta> buscarPorNombreProducto(String nombre_producto) {
-        List<Carta> cartas = cartaRepository.findByNombreProductoLike(nombre_producto);
+        List<Carta> cartas = cartaRepository.findByNombreProductoContainingIgnoreCase(nombre_producto);
         return cartas;
     }
-
-    */
 
 }

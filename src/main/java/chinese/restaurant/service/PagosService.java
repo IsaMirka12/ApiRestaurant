@@ -25,6 +25,11 @@ public class PagosService {
                 .orElseThrow(() -> new RuntimeException("Pago no encontrado"));
     }
 
+    public List<Pagos> findByPedidoId(Integer pedido_id) {
+        return pagoRepository.findByPedidoId(pedido_id);
+    }
+
+
     public String insertarPago(Pagos pago) {
         pagoRepository.save(pago);
         return "Se registró el pago correctamente";

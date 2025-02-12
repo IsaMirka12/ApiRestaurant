@@ -38,30 +38,28 @@ public class CartaController {
     @PostMapping
     public ResponseEntity<Respuesta> insertarCarta(@RequestBody Carta carta) {
         String respuesta = cartaService.insertarCarta(carta);
-        Respuesta rep = new Respuesta(respuesta, true);
+        Respuesta rep = new Respuesta(respuesta, true, 0);
         return ResponseEntity.ok(rep);
     }
 
-    /*
+
     @PutMapping("/eliminar/{id}")
 
     public ResponseEntity<Respuesta> eliminarLogico(@PathVariable Integer id) {
         try {
             cartaService.eliminarCartaLogico(id);
-            Respuesta respuesta = new Respuesta("El plato ha sido eliminado", true);
+            Respuesta respuesta = new Respuesta("El plato ha sido eliminado", true, 0);
             return ResponseEntity.ok(respuesta);
         } catch (RuntimeException e) {
-            Respuesta respuesta = new Respuesta("Plato no encontrado", false);
+            Respuesta respuesta = new Respuesta("Plato no encontrado", false, 0);
             return ResponseEntity.status(404).body(respuesta);
         }
     }
 
     @GetMapping("/findByName")
-    public ResponseEntity<List<Carta>> buscarPorNombreProducto(@RequestParam String nombre_producto) {
-        List<Carta> cartas = cartaService.buscarPorNombreProducto("%"+nombre_producto+"%");
+    public ResponseEntity<List<Carta>> buscarPorNombreProducto(@RequestParam String nombre) {
+        List<Carta> cartas = cartaService.buscarPorNombreProducto(nombre);
+        System.out.println("total de cartas" + cartas.size());
         return ResponseEntity.ok(cartas);
     }
-
-
-     */
 }

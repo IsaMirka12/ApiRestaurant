@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface PagoRepository extends JpaRepository<Pagos, Integer> {
 
+    List<Pagos> findByPedidoId(Integer pedido_id);
+
 }

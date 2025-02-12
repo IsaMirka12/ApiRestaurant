@@ -22,8 +22,10 @@ public class Pagos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonFormat
     private int id;
+
     @JsonFormat
-    private int pedido_id;
+    @Column(name = "pedido_id")
+    private int pedidoId;
 
     @Column(name = "monto")
     @JsonFormat

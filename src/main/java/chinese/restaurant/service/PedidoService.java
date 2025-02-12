@@ -25,9 +25,9 @@ public class PedidoService{
     }
 
     // Guardar o actualizar un usuario
-    public String guardarActualizar(Pedidos pedidos) {
-        pedidoRepository.save(pedidos);
-        return "Se registro el pedido";
+    public Number guardarActualizar(Pedidos pedidos) {
+        Pedidos pedidoGuardado = pedidoRepository.save(pedidos);
+        return pedidoGuardado.getId();
     }
 
     @Transactional
@@ -35,6 +35,14 @@ public class PedidoService{
         Pedidos pedido = pedidoRepository.findById(id).orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
         pedido.setEstadoP(false);
         pedidoRepository.save(pedido);
+    }
+
+    public void guardarPedido(Pedidos pedido) {
+        pedidoRepository.save(pedido);  // Guarda o actualiza el pedido
+    }
+
+    public Pedidos obtenerPedidoPorId(int id) {
+        return pedidoRepository.findById(id).orElse(null); // Retorna null si no lo encuentra
     }
 
 

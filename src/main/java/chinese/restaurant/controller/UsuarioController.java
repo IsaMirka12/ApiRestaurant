@@ -40,8 +40,8 @@ public class UsuarioController {
     // Crear o actualizar un usuario
     @PostMapping
     public ResponseEntity<Respuesta> guardarActualizar(@RequestBody Usuario usuario) {
-        String respuesta = usuarioService.guardarActualizar(usuario);
-        Respuesta rep = new Respuesta(respuesta, true);
+        Number idUsuario = usuarioService.guardarActualizar(usuario);
+        Respuesta rep = new Respuesta("Se registro/actualizo correctamente", true, "ADMIN", idUsuario);
         return ResponseEntity.ok(rep);  // Respuesta 201 si el recurso fue creado/actualizado
     }
 
@@ -49,17 +49,17 @@ public class UsuarioController {
     public ResponseEntity<Respuesta> eliminarLogico(@PathVariable Integer id) {
         try {
             usuarioService.eliminarLogico(id);  // Llamada al servicio para eliminar lógicamente
-            Respuesta respuesta = new Respuesta("El usuario ha sido eliminado", true);
+            Respuesta respuesta = new Respuesta("El usuario ha sido eliminado", true, 0);
             return ResponseEntity.ok(respuesta);  // Retornar el DTO con el mensaje de éxito
         } catch (RuntimeException e) {
-            Respuesta respuesta = new Respuesta("Usuario no encontrado", false);
+            Respuesta respuesta = new Respuesta("Usuario no encontrado", false, 0);
             return ResponseEntity.status(404).body(respuesta);  // Retornar el DTO con el mensaje de error
         }
     }
 
     @GetMapping("/findByName")
     public ResponseEntity<List<Usuario>> buscarPorNombre(@RequestParam String name) {
-        List<Usuario> usuarios = usuarioService.buscarPorNombre("%"+name+"%");
+        List<Usuario> usuarios = usuarioService.buscarPorNombre(name);
         return ResponseEntity.ok(usuarios);
     }
 }
